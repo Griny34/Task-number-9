@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
@@ -14,7 +15,7 @@ public class Health : MonoBehaviour
     public float HealthPlaeyr
     {
         get => _health;
-        set
+        private set
         {
             _health = value;
 
@@ -32,11 +33,20 @@ public class Health : MonoBehaviour
         }
     }
 
-    public delegate void HealthChang();
-    public event HealthChang OnHealthChang;
+    public event UnityAction OnHealthChang;
 
     private void Awake()
     {
         _health = _healthStart;
+    }
+
+    public void TakeDamag(float damag)
+    {       
+        HealthPlaeyr -= damag;
+    }
+
+    public void TakeHeal(float heal)
+    {
+        HealthPlaeyr += heal;
     }
 }

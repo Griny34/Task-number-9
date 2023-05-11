@@ -9,34 +9,43 @@ public class HealthView : MonoBehaviour
     [SerializeField] public Slider _slider;
     [SerializeField] private float _delay;
 
-    [SerializeField] private float changeFactor;
-    [SerializeField] private Button decreaseButton;
-    [SerializeField] private Button increaseButton;
-
     private float _targetHealth;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
         _slider.value = 1;
-
-        decreaseButton.onClick.AddListener(() =>
-        {
-            _health.HealthPlaeyr -= changeFactor;
-        });
-
-        increaseButton.onClick.AddListener(() =>
-        {
-            _health.HealthPlaeyr += changeFactor;
-        });
     }
 
-    private void Update()
+    private void OnEnable()
     {
+        _health.OnHealthChang += OnHealthChang;
+    }
+
+    private void OnDisable()
+    {
+        _health.OnHealthChang -= OnHealthChang;
+    }
+
+    private void OnHealthChang()
+    {        
         _targetHealth = _health.HealthPlaeyr / _health.StartHealth;
 
-        if (_slider.value == _targetHealth) return;
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+        }
 
-        ChangHealthSlow(_targetHealth);
+        _coroutine = StartCoroutine(ChangHelth(_targetHealth));
+    }
+
+    private IEnumerator ChangHelth(float targetHealth)
+    {
+        while (targetHealth != _slider.value)
+        {
+            ChangHealthSlow(targetHealth);
+            yield return null;
+        }
     }
 
     private void ChangHealthSlow(float targetHealth)
