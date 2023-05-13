@@ -19,17 +19,17 @@ public class HealthView : MonoBehaviour
 
     private void OnEnable()
     {
-        _health.OnHealthChang += OnHealthChang;
+        _health.HealthChanged += OnHealthChang;
     }
 
     private void OnDisable()
     {
-        _health.OnHealthChang -= OnHealthChang;
+        _health.HealthChanged -= OnHealthChang;
     }
 
     private void OnHealthChang()
     {        
-        _targetHealth = _health.HealthPlaeyr / _health.StartHealth;
+        _targetHealth = _health.HealthPlaeyr / _health.MaxHealth;
 
         if(_coroutine != null)
         {

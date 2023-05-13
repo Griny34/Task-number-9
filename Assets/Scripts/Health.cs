@@ -7,11 +7,12 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _healthStart;
+    [SerializeField] private float _healthMax;
+    [SerializeField] private float _healthMin;
 
     private float _health;
 
-    public float StartHealth => _healthStart;
+    public float MaxHealth => _healthMax;
     public float HealthPlaeyr
     {
         get => _health;
@@ -19,25 +20,25 @@ public class Health : MonoBehaviour
         {
             _health = value;
 
-            if (_health > StartHealth)
-            {
-                _health = StartHealth;
-            }
-
-            if (_health < 0)
-            {
-                _health = 0;
-            }
-
-            OnHealthChang?.Invoke();
+            HealthChanged?.Invoke();
         }
     }
 
-    public event UnityAction OnHealthChang;
+    public event UnityAction HealthChanged;
 
     private void Awake()
     {
-        _health = _healthStart;
+        _health = _healthMax;
+    }
+
+    private void Update()
+    {
+        ControlBordersHealth();
+    }
+
+    private void ControlBordersHealth()
+    {
+        HealthPlaeyr = Mathf.Clamp(HealthPlaeyr, _healthMin, _healthMax);
     }
 
     public void TakeDamag(float damag)
