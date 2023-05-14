@@ -31,23 +31,13 @@ public class Health : MonoBehaviour
         _health = _healthMax;
     }
 
-    private void Update()
-    {
-        ControlBordersHealth();
-    }
-
-    private void ControlBordersHealth()
-    {
-        HealthPlaeyr = Mathf.Clamp(HealthPlaeyr, _healthMin, _healthMax);
-    }
-
     public void TakeDamag(float damag)
-    {       
-        HealthPlaeyr -= damag;
+    {
+        HealthPlaeyr = Mathf.Clamp(HealthPlaeyr -= damag, _healthMin, _healthMax);
     }
 
     public void TakeHeal(float heal)
     {
-        HealthPlaeyr += heal;
+        HealthPlaeyr = Mathf.Clamp(HealthPlaeyr += heal, _healthMin, _healthMax);
     }
 }

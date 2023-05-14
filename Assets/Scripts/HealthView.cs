@@ -11,10 +11,11 @@ public class HealthView : MonoBehaviour
 
     private float _targetHealth;
     private Coroutine _coroutine;
+    private float _maxValue = 1;
 
     private void Awake()
     {
-        _slider.value = 1;
+        _slider.value = _maxValue;
     }
 
     private void OnEnable()
